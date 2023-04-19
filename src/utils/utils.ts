@@ -24,16 +24,22 @@ export function getPathTo(element: HTMLElement): string | undefined {
 }
 
 export function createHistoryTracker<T extends keyof History>(type: T) {
-  const origin = history[type];
+  // 1. 复制原方法
+  const origin = history[type]
+  // 2. 返回一个
   return function (this: any) {
-    const res = origin.apply(this, arguments);
-    const event = new Event(type);
-    window.dispatchEvent(event);
-    return res;
-  };
+    // 调用原方法
+    const res = origin.apply(this, arguments)
+
+    // 创建自定义事件并触发
+    const event = new Event(type)
+    window.dispatchEvent(event)
+
+    return res
+  }
 }
 
-export function batchAddLister (events: string[], fn: () => void) {
+export function batchAddLister(events: string[], fn: () => void) {
   events.forEach(event => {
     window.addEventListener(event, fn)
   })

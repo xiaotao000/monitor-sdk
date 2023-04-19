@@ -1,8 +1,7 @@
 import { getPathTo } from "../utils/utils";
+import { lazyReport } from "./report";
 
-export function AutoTrackerReport() {
-  console.log('自动埋点');
-  
+export function AutoTrackerReport() {  
   document.body.addEventListener("click", function (e) {
     const target = e.target as HTMLElement
     const isNo = target.getAttribute('data-no')
@@ -12,11 +11,11 @@ export function AutoTrackerReport() {
         type: 'click',
         message: message || getPathTo(target)
       }
-      console.log('action', log)
+      lazyReport('action', log)
   });
 }
 
 export function actionCatcher(type: string, message: string) {
     const log = { type, message }
-    console.log('action', log);
+    lazyReport('action', log);
 }

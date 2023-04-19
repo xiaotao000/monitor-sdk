@@ -1,5 +1,6 @@
 import { ErrorReport } from "../type/core";
 import { SourceElement } from "../type/dom";
+import { lazyReport } from "./report";
 
 export function ErrorTrackerReport() {
   function SourceErrorReport(e: ErrorEvent) {
@@ -9,7 +10,7 @@ export function ErrorTrackerReport() {
       message: `${target.tagName}资源加载错误`,
       file: target.src || target.href,
     };
-    console.log("--- 资源加载错误 ---", log);
+    lazyReport("--- 资源加载错误 ---", log);
   }
   window.addEventListener("error", function (e) {
     const target = e.target;
@@ -24,7 +25,7 @@ export function ErrorTrackerReport() {
       col: e.colno,
       error: e.error,
     };
-    console.log("--- js报错 ---", log);
+    lazyReport("--- js报错 ---", log);
   });
   window.addEventListener("unhandledrejection", function (e) {
     const log: ErrorReport = {
@@ -32,7 +33,7 @@ export function ErrorTrackerReport() {
         message: e.reason,
         error: e.reason
       }
-      console.log('----Promise错误----', log)
+      lazyReport('----Promise错误----', log)
   });
 }
 
@@ -42,6 +43,6 @@ export function ErrorCatcher(message: string, error: any) {
       message: message,
       error: error
     }
-    console.log('---js错误----', log)
+    lazyReport('---js错误----', log)
   }
   
